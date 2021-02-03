@@ -1,0 +1,34 @@
+<server side 검증>
+ 1. Spring Validator
+   - 구현방법 -- 구체적으로 작성이 가능함, 복잡한 로직 검증이 가능함 
+   (1). interface Validator를 구현    
+   
+ 2. JSR-303(규약은 계속 추가/수정됨)
+    - 구현방법 -- 간단한 형태로만 검증이 가능함
+   (1). 어노테이션을 이용 -> command객체에 적용
+       @NotNull
+       @Min, @Max
+       @Size(min, max)
+       @Pattern(정규식)
+       
+       -> 이런건 위의 어노테이션 방법으로는 불가능
+          (ex) 네이버 비번 변경할 때, 과거에 사용했던 비밀번호는 사용 할 수 없다고 나오는 것.  
+       
+ conatiner
+ - parent : Model
+ - child  : Controller  - application-context.xml
+
+<구현순서>
+1. resourceBundle 파일 준비 (error.properties...)
+2. messageSource 스프링 bean 등록 (ReloadableResourceBundleMessageSource)
+3. validator, controller에 validate메서드 실행
+4. jsp <form:error path="커맨드객체.필드" />   <- 해당 필드에 에러가 있을 때만 메세지를 표현한다!
+
+<View Resolver> 
+: controller가 반환하는 view name으 이용해 해당요청을 생성할 view객체를 선택함
+
+ -특징-
+ 1. 복수의 view resolver 등록이 가능함
+ 
+ ExcelDownloadView
+ 우리 회사의 전체직원 리스트

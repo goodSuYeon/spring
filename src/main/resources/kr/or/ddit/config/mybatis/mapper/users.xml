@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="users">
+	<!-- select된 컬럼과 resultType에 기술한 클래스의 필드 이름이 동일하면 자동으로 값을 넣어준다
+		 resultType : 한 행의 정보를 저장할 수 있는 클래스 타입을 명시  -->
+  <select id="selectAllUser" resultType="userVo">
+    SELECT * FROM users
+  </select>
+  
+  <select id="selectUser" resultType="userVo" parameterType="String">
+  	SELECT * FROM users WHERE userid = #{value}
+  </select>
+  
+  <select id="selectPagingUser" resultType="userVo" parameterType="pageVo">
+  	SELECT *
+	FROM
+		(SELECT ROWNUM rn, a.*
+	FROM
+   		 (SELECT *
+   			 FROM USERS
+   			 ORDER BY userid)a
+   	 WHERE ROWNUM &lt;= #{page} * #{pageSize})
+	WHERE rn BETWEEN (#{page}-1) * #{pageSize}+1 AND #{page} * #{pageSize}
+  </select>
+
+   <select id="selectAllUserCnt" resultType="int">
+ 		SELECT COUNT(*) FROM users
+   </select>
+   
+  <!-- 사용자 정보 수정 -->
+   <update id="modifyUser" parameterType="userVo">    <!-- update하는거니깐 resultType은 없음 -->
+   UPDATE users SET usernm = #{usernm},
+           pass = #{pass},
+           reg_dt = #{reg_dt},
+           alias = #{alias},
+           addr1 = #{addr1},
+           addr2 = #{addr2},
+           zipcode = #{zipcode}
+	WHERE userid = #{userid}
+   </update>
+   
+   <insert id="registerUser" parameterType="userVo">
+     INSERT INTO users (userid, usernm, pass, alias, addr1, addr2, zipcode, filename, realfilename, reg_dt)
+        VALUES (#{userid}, #{usernm}, #{pass},#{alias}, #{addr1}, #{addr2}, #{zipcode},#{filename},#{realfilename}, sysdate)
+   </insert>
+   
+   	<delete id="deleteUser" parameterType="string">
+		DELETE users
+		WHERE userid = #{value}
+	</delete>
+	
+	<select id="searchUser">
+	SELECT *
+	FROM users
+	WHERE userid LIKE %#{userid}%
+	</select>
+</mapper>
+

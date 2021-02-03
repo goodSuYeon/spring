@@ -31,7 +31,7 @@ public class ComponentScanTest {
 	public void userDaoImplSpringtest() {
 		assertNotNull(userDao);
 		
-		UserVo userVo = userDao.getUser("brown");
+		UserVo userVo = userDao.selectUser("brown");
 		assertEquals("브라운", userVo.getUsernm());
 	}
 	
@@ -40,7 +40,7 @@ public class ComponentScanTest {
 	public void userServiceImplSpringtest() {
 		assertNotNull(userService);
 		
-		UserVo userVo = userService.getUser("brown");
+		UserVo userVo = userService.selectUser("brown");
 		assertEquals("브라운", userVo.getUsernm());
 	}
 }

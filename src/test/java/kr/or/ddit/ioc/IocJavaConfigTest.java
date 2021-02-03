@@ -11,12 +11,20 @@ import kr.or.ddit.ioc.config.IocJavaConfig;
 import kr.or.ddit.user.service.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {IocJavaConfig.class} )
+@ContextConfiguration(classes = {IocJavaConfig.class})
 public class IocJavaConfigTest {
 
-	//
 	@Resource(name="userService")
 	private UserService userService;
+	
+	@Resource(name="userService")
+	private UserService userService2;
+	
+	@Resource(name="userServiceCons")
+	private UserService userServiceCons;
+	
+	@Resource(name="userServicePrototype")
+	private UserService userServicePrototype;
 	
 	@Test
 	public void IocJavaConfigTest() {

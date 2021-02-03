@@ -34,13 +34,13 @@ public class IocMain {
 		// getBean메소드는 Object를 반환 근데 우리는 UserDao를 반환하기때문에 형변환 필요! 
 		UserDao userDao = (UserDao) context.getBean("userDao");
 		
-		UserVo userVo = userDao.getUser("brown");
+		UserVo userVo = userDao.selectUser("brown");
 		logger.debug("userVo : {}" , userVo);
 		
 		//스프링 컨테이너로부터 userService 스프링 빈을 DL을 통해 얻어오고 
 		// getUser메소드를 call, 반환된 값(userVo)를 logger를 통해 출력하기
 		UserService userService = (UserService) context.getBean("userService");
-		UserVo userVo2 = userService.getUser("brown");
+		UserVo userVo2 = userService.selectUser("brown");
 		logger.debug("userVo : {}" , userVo2);
 		
 		for(String beanName : context.getBeanDefinitionNames()) {

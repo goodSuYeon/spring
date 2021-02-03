@@ -1,0 +1,74 @@
+<Spring 설정>
+ 1. xml
+ 2. java
+ 3. java + xml
+ ★설정파일을 용도에 따라 여러개로 분리 하는 것도 가능하다★ 
+ 
+<에러>
+compiler시점 - 로딩(서버기동 시점) - Runtime(실행을 해야만 발생하는 에러)
+
+<스프링 xml>
+xml은 그냥 문서일뿐, 타입이 정의되어 있지 않음 (value만 보고서는 문자열인지 날짜항목인지 알 수 없음)
+
+
+<Spring 타입 변환> 
+ - xml에 값을 표시하는 방법은 문자열밖에 없음 (ex) value=”5”
+   -> 5라고 표시한 값을 java의 문자열 타입으로 해석할지, 숫자타입으로 해석할지는 
+      해당 class의 필드타입을 보고 Spring이 결정하게 된다.
+ - 대다수의 타입은 스프링 프레임워크가 타입을 자동으로 변경하는 것이 가능하나,
+   날짜 타입에 대해서는 국가별, 사용자별 표기형식이 다르기 때문에
+   프레임워크에서 임의로 타입변환을 하는 것은 불가능하다. (ex) UserVo reg_dt 컬럼 
+
+
+<Spring 타입 변환이 필요한 경우 크게 2가지>
+   - 값을 주입(DI)할 경우
+   - controller 파라미터를 value객체에 바인딩 할 경우
+
+
+<Spring 타입 변환 방법3가지>
+   1. propertyEditor    	       : 문자 <-> 타입 간의 변환              
+   2. ConversionService  		   : 타입 <-> 타입 간의 변환	         
+   3. FormattingConversionService  : 타입 <-> 타입 간의 변환	
+      (이렇게 명시적으로 등록하지 않아도 추후, MVC에서 배우는 설정에 의해 
+       <mvc:annotation-driven /> 가 등록됨)
+
+  ★위의 방법을 모두 동시에 적용하는 것은 불가능하다.
+   2,3번의 경우 스프링 빈의 이름을 id=”conversionService”로 사용하도록 Spring에서 강제한다    
+     
+ <수업시간 설정>
+ - 부모 컨테이너 : service , repository
+ - 자식 컨테이너 : 하나의 dispatcherServlet생성 , controller
+ 
+     
+<Spring에서 컨트롤러 생성 방법>
+ ★서블릿의 과정과 유사함★
+  1. HttpServlet 클래스를 상속받은 클래스를 생성
+  2. url-mapping
+  
+ - Spring
+  (1). @Controller 어노테이션을 적용한 클래스를 생성
+  (2). @RequestMapping 어노테이션을 이용하여 class,method에 적용 
+ 
+ -차이점-
+ 서블릿의 경우 class 단위로 url-mapping이 이루어짐
+ Spring class/method url-mapping이 이루어짐
+ (ex)
+  - Servlet : userList, user, userRegist, userModify, userDelete
+  - Spring  : 하나로 통합이 가능함
+  
+
+<Spring 컨트롤러 테스트>
+ - servlet환경에서는 servlet자체를 테스트하기가 굉장히 어렵다.
+   servlet을 생성/실행하는 주체가 servlet-container
+   HttpServletRequest , HttpSession 등 필요한 객체가 많다.
+ 
+ - Spring 환경에서는 해당 객체를 쉽게 만들 수 있는 'Mock객체'를 제공한다.
+   MockHttpServletRequest, MockHttpServletResponse, MockHttpSession
+   -> 그러나 손이 많이 가는것은 똑같음 !
+   
+   Spring 프레임워크에서 처리될 요청은 Dispatcher Servlet이 받으므로, 
+   Dispatcher Servlet을 대신하여 테스트할 수 있는 객체를 제공하는 형식을 controller 테스트를 진행한다.
+   
+   DispatcherServlet ==> MockMvc 생성을 위해서 WebApplicationContext객체 필요
+    				 ==> 스프링 프레임워크에서 ioc 컨테이너 생성 시 자동으로 생성
+ 
