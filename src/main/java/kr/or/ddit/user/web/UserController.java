@@ -85,6 +85,38 @@ public class UserController {
 		return "tiles.user.pagingUser";	
 	}
 	
+	//사용자 리스트가 없는 상태의 화면만 응답(데이터x)
+	@RequestMapping("pagingUserAjaxView")
+	public String pagingUserAjaxView() {
+		
+		return "tiles.user.pagingUserAjax";  //view name 리턴
+	}
+	
+	@RequestMapping("pagingUserAjax")
+	public String pagingUserAjax(@RequestParam(defaultValue = "1") int page, 
+						     @RequestParam(defaultValue = "5") int pageSize,
+						     Model model) {
+
+		PageVo pageVo = new PageVo(page,pageSize);   
+		
+		model.addAllAttributes(userService.selectPagingUser(pageVo));
+	   
+		//우리가 설정한 jsonView 리턴
+		return "jsonView";	
+	}
+	
+	@RequestMapping("pagingUserAjaxHtml")
+	public String pagingUserAjaxHtml(@RequestParam(defaultValue = "1") int page, 
+						     @RequestParam(defaultValue = "5") int pageSize,
+						     Model model) {
+
+		PageVo pageVo = new PageVo(page,pageSize);   
+		
+		model.addAllAttributes(userService.selectPagingUser(pageVo));
+	   
+		return "user/pagingUserAjaxHtml";	
+	}
+	
 	@RequestMapping(path="allUserTiles")
 	public String allUserTiles(Model model) {
 		
@@ -92,15 +124,7 @@ public class UserController {
 		
 		return "tiles.user.allUser";
 	}
-	
-	@RequestMapping(path="registuserTiles")
-	public String registUserTiles(Model model) {
-		
-		model.addAttribute("userList", userService.selectAllUser());
-		
-		return "tiles.user.registUser";	
-	}
-	
+
 	/*
 	@RequestMapping("pagingUser")
 	public String pagingUser(PageVo pageVo) {
@@ -114,7 +138,8 @@ public class UserController {
 	@RequestMapping(path="registUser", method=RequestMethod.GET) 
 	public String registUser(){
 		
-		return "user/registUser";
+//		return "user/registUser";
+		return "tiles.user.registUser";	
 	}
 
 	@RequestMapping(path="registUser", method=RequestMethod.POST)  

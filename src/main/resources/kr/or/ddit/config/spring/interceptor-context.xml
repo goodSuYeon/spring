@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+		 <mvc:mapping path="/**" />
+		<bean class="kr.or.ddit.interceptor.PerformanceCheckInterceptor" />
+		</mvc:interceptor>
+		
+	<!-- 세션 체크 인터넵터-->
+	<mvc:interceptor>
+		<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login/view"/>
+			<mvc:exclude-mapping path="/login/process"/>
+			<mvc:exclude-mapping path="/css/**"/>
+			<mvc:exclude-mapping path="/js/**"/>
+			<mvc:exclude-mapping path="/image/**"/>
+			<bean class="kr.or.ddit.interceptor.SessionCheckInterceptor" />
+	</mvc:interceptor>
+	
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" >
+			<property name="paramName" value="lang"></property>
+		</bean>
+	</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- Locale Resolver 등록 (사용자의 locale정보를 판단함) 
+		 SessionLocaleResolver : 사용자가 선택한 locale정보를 사용자의 session영역에 저장함
+		 local Resolver 스프링 등록시 주의사항
+		 : 스프링에서 항상 스프링 bean의 이름이 localeResolver인 bean을 참조함 
+	-->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+</beans>

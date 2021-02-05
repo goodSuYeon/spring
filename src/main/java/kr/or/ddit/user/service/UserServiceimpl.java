@@ -27,17 +27,17 @@ public class UserServiceimpl implements UserService {
 		this.userDao = userDao;
 	}
 	
-	@Override
-	public UserVo selectUser(String userid) {
-		return userDao.selectUser(userid);
-	}
-
 	public UserDao getUserDao() {
 		return userDao;
 	}
-
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+	
+	@Override
+	public UserVo selectUser(String userid) {
+		return userDao.selectUser(userid);
 	}
 
 	@Override
